@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap');
+
+:root {
+  /* Primary palette — exact brand colors */
+  --teal: #5BB4A9;
+  --green: #80C97A;
+  --gradient: linear-gradient(135deg, #5BB4A9, #80C97A);
+
+  /* Neutrals — from brand guidelines */
+  --white: #FFFFFF;
+  --black: #000000;
+  --light-gray: #E5E5E5;
+
+  /* Typography — Lexend only, never mix fonts */
+  --font-primary: 'Lexend', sans-serif;
+
+  /* Type scale — from brand guidelines */
+  --text-page-title: 32px;
+  --text-section-header: 22px;
+  --text-subheader: 19px;
+  --text-body: 17px;
+  --text-micro: 14px;
+
+  /* Spacing */
+  --section-padding: 48px;
+  --field-gap: 24px;
+  --card-padding: 16px 24px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body, #root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-primary);
+  font-size: var(--text-body);
+  font-weight: 400;
+  color: var(--black);
+  background-color: var(--white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 500;
+}
+
+input, select, textarea, button {
+  font-family: var(--font-primary);
+}
+
+a {
+  color: var(--teal);
+  text-decoration: none;
+}
