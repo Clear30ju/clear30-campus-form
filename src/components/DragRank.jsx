@@ -17,7 +17,21 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
-function SortableItem({ id, label, index, onMoveUp, onMoveDown, isFirst, isLast, isMobile }) {
+function DragHandle() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden
+         style={{ color: 'var(--text-tertiary)', flexShrink: 0 }}>
+      <circle cx="5" cy="3" r="1.3" fill="currentColor" />
+      <circle cx="11" cy="3" r="1.3" fill="currentColor" />
+      <circle cx="5" cy="8" r="1.3" fill="currentColor" />
+      <circle cx="11" cy="8" r="1.3" fill="currentColor" />
+      <circle cx="5" cy="13" r="1.3" fill="currentColor" />
+      <circle cx="11" cy="13" r="1.3" fill="currentColor" />
+    </svg>
+  );
+}
+
+function SortableItem({ id, label, rank, onMoveUp, onMoveDown, isFirst, isLast, isMobile }) {
   const {
     attributes,
     listeners,
@@ -32,12 +46,12 @@ function SortableItem({ id, label, index, onMoveUp, onMoveDown, isFirst, isLast,
     transition,
     display: 'flex',
     alignItems: 'center',
-    gap: '12px',
-    padding: '14px 16px',
+    gap: '16px',
+    padding: '16px 18px',
     backgroundColor: 'var(--white)',
-    borderRadius: '12px',
-    border: '1px solid #E5E5E5',
-    boxShadow: isDragging ? '0px 4px 20px rgba(0, 0, 0, 0.15)' : '0px 1px 4px rgba(0, 0, 0, 0.06)',
+    borderRadius: 'var(--radius-input)',
+    border: '1px solid var(--light-gray)',
+    boxShadow: isDragging ? 'var(--shadow-lifted)' : 'var(--shadow)',
     cursor: isDragging ? 'grabbing' : 'grab',
     zIndex: isDragging ? 10 : 1,
     fontSize: 'var(--text-body)',
@@ -47,36 +61,40 @@ function SortableItem({ id, label, index, onMoveUp, onMoveDown, isFirst, isLast,
 
   return (
     <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
-      <span style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '28px',
-        height: '28px',
-        borderRadius: '50%',
-        background: 'var(--gradient)',
-        color: 'var(--white)',
-        fontSize: 'var(--text-micro)',
-        fontWeight: 500,
-        flexShrink: 0,
-      }}>
-        {index + 1}
+      <span
+        aria-hidden
+        style={{
+          fontFamily: 'var(--font-primary)',
+          fontSize: 'var(--text-body)',
+          fontWeight: 700,
+          lineHeight: 1,
+          background: 'var(--gradient)',
+          WebkitBackgroundClip: 'text',
+          backgroundClip: 'text',
+          color: 'transparent',
+          fontVariantNumeric: 'tabular-nums',
+          letterSpacing: '-0.01em',
+          minWidth: '16px',
+          textAlign: 'center',
+          flexShrink: 0,
+        }}
+      >
+        {rank + 1}
       </span>
-      <span style={{ flex: 1 }}>{label}</span>
-      {isMobile && (
+      <span style={{ flex: 1, lineHeight: 1.4 }}>{label}</span>
+      {isMobile ? (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', flexShrink: 0 }}>
           <button
             type="button"
             disabled={isFirst}
+            aria-label="Move up"
             onClick={(e) => { e.stopPropagation(); onMoveUp(); }}
             style={{
-              border: 'none',
-              background: 'none',
+              border: 'none', background: 'none',
               cursor: isFirst ? 'default' : 'pointer',
-              opacity: isFirst ? 0.3 : 1,
-              padding: '2px 6px',
-              fontSize: '14px',
-              lineHeight: 1,
+              opacity: isFirst ? 0.25 : 0.55,
+              padding: '2px 6px', fontSize: '14px', lineHeight: 1,
+              color: 'var(--text-primary)',
             }}
           >
             &#9650;
@@ -84,20 +102,21 @@ function SortableItem({ id, label, index, onMoveUp, onMoveDown, isFirst, isLast,
           <button
             type="button"
             disabled={isLast}
+            aria-label="Move down"
             onClick={(e) => { e.stopPropagation(); onMoveDown(); }}
             style={{
-              border: 'none',
-              background: 'none',
+              border: 'none', background: 'none',
               cursor: isLast ? 'default' : 'pointer',
-              opacity: isLast ? 0.3 : 1,
-              padding: '2px 6px',
-              fontSize: '14px',
-              lineHeight: 1,
+              opacity: isLast ? 0.25 : 0.55,
+              padding: '2px 6px', fontSize: '14px', lineHeight: 1,
+              color: 'var(--text-primary)',
             }}
           >
             &#9660;
           </button>
         </div>
+      ) : (
+        <DragHandle />
       )}
     </div>
   );
@@ -146,25 +165,16 @@ export default function DragRank({ label, helperText, items, value, onChange, er
   };
 
   return (
-    <div style={{ marginBottom: '28px' }}>
-      {label && (
-        <label style={{
-          display: 'block',
-          fontSize: 'var(--text-micro)',
-          fontWeight: 500,
-          color: 'var(--black)',
-          marginBottom: '6px',
-        }}>
-          {label}
-        </label>
-      )}
+    <div style={{ marginBottom: 'var(--space-md)' }}>
+      {label && <label className="c30-field-label">{label}</label>}
       {helperText && (
         <p style={{
-          fontSize: '13px',
+          fontSize: 'var(--text-micro)',
           fontWeight: 400,
-          color: '#888',
-          marginBottom: '10px',
-          lineHeight: 1.4,
+          color: 'var(--text-secondary)',
+          marginTop: '-4px',
+          marginBottom: '12px',
+          lineHeight: 1.45,
         }}>
           {helperText}
         </p>
@@ -184,7 +194,7 @@ export default function DragRank({ label, helperText, items, value, onChange, er
                 key={item.id}
                 id={item.id}
                 label={item.label}
-                index={index}
+                rank={index}
                 isMobile={isMobile}
                 isFirst={index === 0}
                 isLast={index === orderedItems.length - 1}
@@ -198,8 +208,8 @@ export default function DragRank({ label, helperText, items, value, onChange, er
       {error && (
         <p style={{
           fontSize: 'var(--text-micro)',
-          color: '#e53e3e',
-          marginTop: '4px',
+          color: 'var(--red)',
+          marginTop: '6px',
         }}>
           {error}
         </p>

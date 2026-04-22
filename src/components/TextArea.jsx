@@ -1,63 +1,45 @@
 export default function TextArea({ label, helperText, error, registration, ...props }) {
   return (
-    <div style={{ marginBottom: '28px' }}>
-      {label && (
-        <label style={{
-          display: 'block',
-          fontSize: 'var(--text-micro)',
-          fontWeight: 500,
-          color: 'var(--black)',
-          marginBottom: '6px',
-        }}>
-          {label}
-        </label>
-      )}
+    <div style={{ marginBottom: 'var(--space-md)' }}>
+      {label && <label className="c30-field-label">{label}</label>}
       {helperText && (
         <p style={{
-          fontSize: '13px',
+          fontSize: 'var(--text-micro)',
           fontWeight: 400,
-          color: '#888',
-          marginBottom: '6px',
-          lineHeight: 1.4,
+          color: 'var(--text-secondary)',
+          marginTop: '-4px',
+          marginBottom: '10px',
+          lineHeight: 1.45,
         }}>
           {helperText}
         </p>
       )}
       <textarea
         rows={4}
+        className="c30-focusable"
+        data-invalid={error ? 'true' : undefined}
         style={{
           width: '100%',
           padding: '14px 16px',
           fontSize: 'var(--text-body)',
           fontFamily: 'var(--font-primary)',
           fontWeight: 400,
-          color: 'var(--black)',
+          color: 'var(--text-primary)',
           backgroundColor: 'var(--white)',
-          border: `1px solid ${error ? '#e53e3e' : '#E5E5E5'}`,
-          borderRadius: '12px',
+          border: '1px solid var(--light-gray)',
+          borderRadius: 'var(--radius-input)',
           outline: 'none',
           resize: 'vertical',
-          transition: 'border-color 0.2s ease, box-shadow 0.2s ease',
-        }}
-        onFocus={(e) => {
-          e.target.style.borderColor = error ? '#e53e3e' : '#5BB4A9';
-          e.target.style.boxShadow = error
-            ? '0 0 0 3px rgba(229, 62, 62, 0.12)'
-            : '0 0 0 3px rgba(91, 180, 169, 0.15)';
-        }}
-        onBlur={(e) => {
-          e.target.style.borderColor = error ? '#e53e3e' : '#E5E5E5';
-          e.target.style.boxShadow = error ? '0 0 0 3px rgba(229, 62, 62, 0.12)' : 'none';
-          registration?.onBlur?.(e);
+          transition: 'border-color 0.2s var(--ease-out), box-shadow 0.2s var(--ease-out)',
         }}
         {...registration}
         {...props}
       />
       {error && (
         <p style={{
-          fontSize: '13px',
-          color: '#e53e3e',
-          marginTop: '5px',
+          fontSize: 'var(--text-micro)',
+          color: 'var(--red)',
+          marginTop: '6px',
         }}>
           {error}
         </p>

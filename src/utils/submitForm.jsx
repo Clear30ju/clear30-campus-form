@@ -1,18 +1,19 @@
+import { supabase } from './supabase';
+
 export async function submitForm(formData) {
-  const payload = {
+  const submission = {
     ...formData,
     submitted_at: new Date().toISOString(),
   };
 
-  console.log('Form Submission Payload:', JSON.stringify(payload, null, 2));
+  // Don't .select() the inserted row — anon has INSERT only, not SELECT,
+  // so asking for the row back would trip RLS.
+  const { error } = await supabase
+    .schema('schools')
+    .from('campus_submissions')
+    .insert({ submission });
 
-  // For production: POST to an API endpoint
-  // const response = await fetch('/api/submit', {
-  //   method: 'POST',
-  //   headers: { 'Content-Type': 'application/json' },
-  //   body: JSON.stringify(payload),
-  // });
-  // return response.json();
-
-  return payload;
+  if (error) {
+    throw new Error(error.message || 'Failed to submit form');
+  }
 }

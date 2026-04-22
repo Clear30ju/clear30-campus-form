@@ -1,20 +1,21 @@
 export default function SectionHeader({ title, description }) {
   return (
-    <div style={{ marginBottom: '28px' }}>
+    <div style={{ marginBottom: 'var(--space-md)' }}>
       <h2 style={{
-        fontSize: 'var(--text-section-header)',
-        fontWeight: 500,
-        color: 'var(--black)',
-        marginBottom: description ? '8px' : 0,
+        fontSize: 'var(--text-heading)',
+        fontWeight: 600,
+        color: 'var(--text-primary)',
+        letterSpacing: '-0.01em',
+        marginBottom: description ? '6px' : 0,
       }}>
         {title}
       </h2>
       {description && (
         <p style={{
-          fontSize: 'var(--text-body)',
+          fontSize: 'var(--text-small)',
           fontWeight: 400,
-          color: '#555',
-          lineHeight: 1.6,
+          color: 'var(--text-secondary)',
+          lineHeight: 1.55,
         }}>
           {description}
         </p>

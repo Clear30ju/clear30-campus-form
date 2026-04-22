@@ -7,6 +7,7 @@ import RadioGroup from '../components/RadioGroup';
 import CheckboxGroup from '../components/CheckboxGroup';
 import TextInput from '../components/TextInput';
 import SubmitButton from '../components/SubmitButton';
+import Card from '../components/Card';
 
 const schema = z.object({
   distribution_methods: z.array(z.string()).min(1, 'Please select at least one option'),
@@ -109,25 +110,25 @@ export default function Implementation() {
         error={errors.sso?.message}
       />
 
-      <div style={{
-        marginTop: '28px',
-        padding: '24px',
-        backgroundColor: 'var(--white)',
-        border: '1px solid #E5E5E5',
-        borderRadius: '12px',
-      }}>
+      <Card
+        color="var(--surface-tint)"
+        shadow={false}
+        padding="20px 22px"
+        style={{ marginTop: 'var(--space-md)', border: '1px solid var(--hairline)' }}
+      >
         <p style={{
-          fontSize: 'var(--text-body)',
-          fontWeight: 500,
-          color: 'var(--black)',
-          marginBottom: '6px',
+          fontSize: 'var(--text-small)',
+          fontWeight: 600,
+          color: 'var(--text-primary)',
+          marginBottom: '4px',
         }}>
           IT contact for integration (optional)
         </p>
         <p style={{
           fontSize: 'var(--text-micro)',
-          color: '#666',
-          marginBottom: '16px',
+          color: 'var(--text-secondary)',
+          marginBottom: '18px',
+          lineHeight: 1.5,
         }}>
           If you have a contact on your IT team, share their info below — our team will coordinate directly with them to make setup seamless.
         </p>
@@ -141,7 +142,7 @@ export default function Implementation() {
           error={errors.it_contact_email?.message}
           registration={register('it_contact_email')}
         />
-      </div>
+      </Card>
 
       <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '32px' }}>
         <SubmitButton variant="secondary" onClick={prevStep}>Back</SubmitButton>

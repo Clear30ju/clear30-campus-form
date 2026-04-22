@@ -9,30 +9,33 @@ export default function ProgressBar({ currentStep, totalSteps }) {
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        padding: '14px 0 10px',
+        padding: '16px 0 12px',
       }}>
         <span style={{
           fontSize: 'var(--text-micro)',
           fontWeight: 500,
-          color: 'var(--black)',
-          letterSpacing: '0.01em',
+          color: 'var(--text-secondary)',
+          letterSpacing: '0.02em',
         }}>
           Step {currentStep} of {totalSteps}
         </span>
       </div>
       <div style={{
         width: '100%',
-        height: '8px',
+        height: '6px',
         backgroundColor: 'var(--light-gray)',
         overflow: 'hidden',
+        borderRadius: 'var(--radius-pill)',
+        margin: '0 0 2px',
       }}>
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${progress}%` }}
-          transition={{ duration: 0.5, ease: 'easeInOut' }}
+          transition={{ duration: 0.5, ease: [0.2, 0.8, 0.2, 1] }}
           style={{
             height: '100%',
-            background: 'linear-gradient(90deg, #5BB4A9, #80C97A)',
+            background: 'var(--gradient)',
+            borderRadius: 'var(--radius-pill)',
           }}
         />
       </div>

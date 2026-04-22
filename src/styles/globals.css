@@ -1,30 +1,64 @@
 @import url('https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap');
 
 :root {
-  /* Primary palette — exact brand colors */
+  /* Brand palette */
   --teal: #5BB4A9;
   --green: #80C97A;
   --gradient: linear-gradient(135deg, #5BB4A9, #80C97A);
+  --gradient-bright: linear-gradient(135deg, #26CD6A, #00BCA5);
 
-  /* Neutrals — from brand guidelines */
+  /* Error / urgency */
+  --red: #f65555;
+  --red-gradient: linear-gradient(135deg, #f65555, #fb5151);
+
+  /* Neutrals */
   --white: #FFFFFF;
   --black: #000000;
   --light-gray: #E5E5E5;
+  --hairline: rgba(0, 0, 0, 0.08);
+  --surface-tint: #F7F8F9;
 
-  /* Typography — Lexend only, never mix fonts */
+  /* Text opacity scale */
+  --text-primary: rgba(0, 0, 0, 1);
+  --text-secondary: rgba(0, 0, 0, 0.55);
+  --text-tertiary: rgba(0, 0, 0, 0.3);
+  --text-disabled: rgba(0, 0, 0, 0.12);
+
+  /* Typography */
   --font-primary: 'Lexend', sans-serif;
 
-  /* Type scale — from brand guidelines */
-  --text-page-title: 32px;
-  --text-section-header: 22px;
-  --text-subheader: 19px;
-  --text-body: 17px;
-  --text-micro: 14px;
+  --text-hero: 36px;
+  --text-page-title: 26px;
+  --text-heading: 20px;
+  --text-subheading: 17px;
+  --text-body: 16px;
+  --text-label: 15px;
+  --text-small: 14px;
+  --text-micro: 13px;
+  --text-mini: 11px;
+
+  /* Radii */
+  --radius-card: 20px;
+  --radius-input: 14px;
+  --radius-pill: 999px;
+  --radius-logo: 10px;
+
+  /* Shadow */
+  --shadow: 0 2px 14px rgba(0, 0, 0, 0.06);
+  --shadow-lifted: 0 8px 28px rgba(0, 0, 0, 0.1);
+  --shadow-brand: 0 6px 20px rgba(91, 180, 169, 0.3);
 
   /* Spacing */
-  --section-padding: 48px;
-  --field-gap: 24px;
-  --card-padding: 16px 24px;
+  --space-xs: 7px;
+  --space-sm: 14px;
+  --space-md: 28px;
+  --space-lg: 42px;
+  --space-xl: 56px;
+  --horizontal-padding: 25px;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --spring: cubic-bezier(0.34, 1.4, 0.6, 1);
 }
 
 *,
@@ -43,14 +77,15 @@ body {
   font-family: var(--font-primary);
   font-size: var(--text-body);
   font-weight: 400;
-  color: var(--black);
+  color: var(--text-primary);
   background-color: var(--white);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 500;
+  font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 input, select, textarea, button {
@@ -60,4 +95,120 @@ input, select, textarea, button {
 a {
   color: var(--teal);
   text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Shared focus ring for all form controls */
+.c30-focusable:focus-visible {
+  border-color: var(--teal);
+  box-shadow: 0 0 0 3px rgba(91, 180, 169, 0.2);
+}
+.c30-focusable[data-invalid='true'] {
+  border-color: var(--red);
+}
+.c30-focusable[data-invalid='true']:focus-visible {
+  box-shadow: 0 0 0 3px rgba(246, 85, 85, 0.2);
+}
+
+/* Field labels */
+.c30-field-label {
+  display: block;
+  font-size: var(--text-label);
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  letter-spacing: -0.005em;
+}
+
+/* Option rows — used by RadioGroup and CheckboxGroup */
+.c30-option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  font-size: var(--text-body);
+  font-weight: 400;
+  color: var(--text-primary);
+  cursor: pointer;
+  border-radius: var(--radius-input);
+  border: 1px solid var(--light-gray);
+  background: var(--white);
+  position: relative;
+  transition:
+    background 0.2s var(--ease-out),
+    border-color 0.2s var(--ease-out),
+    color 0.2s var(--ease-out),
+    box-shadow 0.2s var(--ease-out),
+    transform 0.15s var(--ease-out);
+}
+
+.c30-option input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  margin: 0;
+  width: 0;
+  height: 0;
+}
+
+.c30-option .c30-indicator {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border: 1.5px solid rgba(0, 0, 0, 0.25);
+  background: var(--white);
+  flex-shrink: 0;
+  transition: all 0.2s var(--ease-out);
+}
+
+.c30-option[data-kind='radio'] .c30-indicator {
+  border-radius: 50%;
+}
+
+.c30-option[data-kind='checkbox'] .c30-indicator {
+  border-radius: 6px;
+}
+
+.c30-option .c30-indicator-dot,
+.c30-option .c30-indicator-check {
+  opacity: 0;
+  transform: scale(0.6);
+  transition: opacity 0.15s var(--ease-out), transform 0.2s var(--spring);
+}
+
+.c30-option:hover {
+  border-color: rgba(91, 180, 169, 0.55);
+  transform: translateY(-1px);
+}
+
+.c30-option:has(input:checked) {
+  background: var(--gradient);
+  border: 1px solid transparent;
+  color: var(--white);
+  box-shadow: var(--shadow-brand);
+  transform: translateY(0);
+}
+
+.c30-option:has(input:checked) .c30-indicator {
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.9);
+}
+
+.c30-option:has(input:checked) .c30-indicator-dot,
+.c30-option:has(input:checked) .c30-indicator-check {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.c30-option:has(input:focus-visible) {
+  box-shadow: 0 0 0 3px rgba(91, 180, 169, 0.28);
+}
+
+.c30-option:has(input:checked:focus-visible) {
+  box-shadow: var(--shadow-brand), 0 0 0 3px rgba(255, 255, 255, 0.55);
 }

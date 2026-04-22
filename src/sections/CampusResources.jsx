@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useFormContext } from '../hooks/useFormState';
 import SectionHeader from '../components/SectionHeader';
@@ -8,6 +9,8 @@ import { submitForm } from '../utils/submitForm';
 
 export default function CampusResources() {
   const { formData, updateSection, nextStep, prevStep } = useFormContext();
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
 
   const { register, handleSubmit } = useForm({
     defaultValues: {
@@ -20,13 +23,21 @@ export default function CampusResources() {
   });
 
   const onSubmit = async (data) => {
+    setSubmitError(null);
+    setSubmitting(true);
     updateSection('campus_resources', data);
     const fullData = {
       ...formData,
       campus_resources: data,
     };
-    await submitForm(fullData);
-    nextStep();
+    try {
+      await submitForm(fullData);
+      nextStep();
+    } catch (err) {
+      setSubmitError(err?.message || 'Something went wrong. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -57,9 +68,23 @@ export default function CampusResources() {
         registration={register('other_resources')}
       />
 
+      {submitError && (
+        <p style={{
+          fontSize: 'var(--text-micro)',
+          color: 'var(--red)',
+          marginTop: '-4px',
+          marginBottom: '12px',
+          lineHeight: 1.5,
+        }}>
+          {submitError}
+        </p>
+      )}
+
       <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '32px' }}>
-        <SubmitButton variant="secondary" onClick={prevStep}>Back</SubmitButton>
-        <SubmitButton type="submit">Submit</SubmitButton>
+        <SubmitButton variant="secondary" onClick={prevStep} disabled={submitting}>Back</SubmitButton>
+        <SubmitButton type="submit" disabled={submitting}>
+          {submitting ? 'Submitting...' : 'Submit'}
+        </SubmitButton>
       </div>
     </form>
   );
