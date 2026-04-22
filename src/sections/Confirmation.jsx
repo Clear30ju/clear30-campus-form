@@ -117,7 +117,7 @@ export default function Confirmation() {
             marginBottom: 'var(--space-md)',
           }}>
             <img
-              src="/clear30-logo.png"
+              src={`${import.meta.env.BASE_URL}clear30-logo.png`}
               alt="Clear30"
               style={{
                 width: '44px',
