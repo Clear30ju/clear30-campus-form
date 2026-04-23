@@ -10,7 +10,6 @@ import SubmitButton from '../components/SubmitButton';
 
 const schema = z.object({
   recreational_legal: z.string().min(1, 'This field is required'),
-  permitted_on_campus: z.string().min(1, 'This field is required'),
   violation_consequences: z.array(z.string()).min(1, 'Please select at least one option'),
   violation_consequences_other: z.string().optional(),
   amnesty_policy: z.string().min(1, 'This field is required'),
@@ -34,7 +33,6 @@ export default function CannabisPolicy() {
     resolver: zodResolver(schema),
     defaultValues: {
       recreational_legal: formData.cannabis_policy.recreational_legal,
-      permitted_on_campus: formData.cannabis_policy.permitted_on_campus,
       violation_consequences: formData.cannabis_policy.violation_consequences,
       violation_consequences_other: formData.cannabis_policy.violation_consequences_other,
       amnesty_policy: formData.cannabis_policy.amnesty_policy,
@@ -62,18 +60,6 @@ export default function CannabisPolicy() {
         ]}
         error={errors.recreational_legal?.message}
         registration={register('recreational_legal')}
-      />
-
-      <RadioGroup
-        label="Is cannabis use permitted on your campus?"
-        name="permitted_on_campus"
-        options={[
-          { value: 'yes', label: 'Yes' },
-          { value: 'no', label: 'No' },
-          { value: 'permitted_certain_areas', label: 'Permitted in certain areas' },
-        ]}
-        error={errors.permitted_on_campus?.message}
-        registration={register('permitted_on_campus')}
       />
 
       <Controller

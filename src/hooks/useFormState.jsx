@@ -14,7 +14,6 @@ const defaultFormData = {
   },
   cannabis_policy: {
     recreational_legal: '',
-    permitted_on_campus: '',
     violation_consequences: [],
     violation_consequences_other: '',
     amnesty_policy: '',
