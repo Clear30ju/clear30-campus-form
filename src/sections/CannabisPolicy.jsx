@@ -13,6 +13,7 @@ const schema = z.object({
   violation_consequences: z.array(z.string()).min(1, 'Please select at least one option'),
   violation_consequences_other: z.string().optional(),
   amnesty_policy: z.string().min(1, 'This field is required'),
+  policy_text: z.string().optional(),
   policy_emphasis: z.string().optional(),
 });
 
@@ -36,6 +37,7 @@ export default function CannabisPolicy() {
       violation_consequences: formData.cannabis_policy.violation_consequences,
       violation_consequences_other: formData.cannabis_policy.violation_consequences_other,
       amnesty_policy: formData.cannabis_policy.amnesty_policy,
+      policy_text: formData.cannabis_policy.policy_text,
       policy_emphasis: formData.cannabis_policy.policy_emphasis,
     },
   });
@@ -89,6 +91,13 @@ export default function CannabisPolicy() {
         ]}
         error={errors.amnesty_policy?.message}
         registration={register('amnesty_policy')}
+      />
+
+      <TextArea
+        label="Your campus cannabis policy (optional)"
+        helperText="Paste your policy as you'd like it shown to students. It appears verbatim in the module on campus and legal reality. If you'd rather we adapt it from your website, leave this blank and our team will follow up."
+        rows={8}
+        registration={register('policy_text')}
       />
 
       <TextArea

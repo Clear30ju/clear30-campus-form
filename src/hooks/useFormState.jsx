@@ -5,18 +5,21 @@ const FormContext = createContext();
 const defaultFormData = {
   campus_info: {
     university_name: '',
+    allowed_email_domains: '',
     contact_name: '',
     contact_title: '',
     contact_email: '',
     contact_phone: '',
     undergraduate_enrollment: null,
     estimated_students: null,
+    welcome_message: '',
   },
   cannabis_policy: {
     recreational_legal: '',
     violation_consequences: [],
     violation_consequences_other: '',
     amnesty_policy: '',
+    policy_text: '',
     policy_emphasis: '',
   },
   content_priorities: {
