@@ -5,11 +5,14 @@ import { useFormContext } from '../hooks/useFormState';
 import SectionHeader from '../components/SectionHeader';
 import TextInput from '../components/TextInput';
 import TextArea from '../components/TextArea';
+import RadioGroup from '../components/RadioGroup';
 import SubmitButton from '../components/SubmitButton';
 
 const domainPattern = /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)+$/i;
 
 const schema = z.object({
+  program_interest: z.string().min(1, 'Please select a program'),
+  program_format: z.string().optional(),
   university_name: z.string().min(1, 'University name is required'),
   allowed_email_domains: z
     .string()
@@ -25,14 +28,24 @@ const schema = z.object({
   undergraduate_enrollment: z.string().min(1, 'Enrollment is required'),
   estimated_students: z.string().optional(),
   welcome_message: z.string().optional(),
+}).superRefine((data, ctx) => {
+  if (data.program_interest === 'both' && !data.program_format) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ['program_format'],
+      message: 'Please select a format',
+    });
+  }
 });
 
 export default function CampusInfo() {
   const { formData, updateSection, nextStep } = useFormContext();
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
+  const { register, handleSubmit, watch, formState: { errors } } = useForm({
     resolver: zodResolver(schema),
     defaultValues: {
+      program_interest: formData.campus_info.program_interest,
+      program_format: formData.campus_info.program_format,
       university_name: formData.campus_info.university_name,
       allowed_email_domains: formData.campus_info.allowed_email_domains,
       contact_name: formData.campus_info.contact_name,
@@ -45,6 +58,8 @@ export default function CampusInfo() {
     },
   });
 
+  const programInterest = watch('program_interest');
+
   const onSubmit = (data) => {
     const normalizedDomains = data.allowed_email_domains
       .split(',')
@@ -53,6 +68,7 @@ export default function CampusInfo() {
       .join(', ');
     updateSection('campus_info', {
       ...data,
+      program_format: data.program_interest === 'both' ? data.program_format : '',
       allowed_email_domains: normalizedDomains,
       undergraduate_enrollment: data.undergraduate_enrollment ? Number(data.undergraduate_enrollment) : null,
       estimated_students: data.estimated_students ? Number(data.estimated_students) : null,
@@ -115,6 +131,31 @@ export default function CampusInfo() {
         helperText="A short greeting from your campus shown to students when they begin the program. Leave blank to use the default."
         registration={register('welcome_message')}
       />
+
+      <RadioGroup
+        label="Which program are you interested in?"
+        name="program_interest"
+        options={[
+          { value: 'cannabis', label: 'Cannabis' },
+          { value: 'alcohol', label: 'Alcohol' },
+          { value: 'both', label: 'Both' },
+        ]}
+        error={errors.program_interest?.message}
+        registration={register('program_interest')}
+      />
+
+      {programInterest === 'both' && (
+        <RadioGroup
+          label="How would you like the two programs delivered?"
+          name="program_format"
+          options={[
+            { value: 'separate', label: 'Two separate 20-minute courses (one cannabis, one alcohol)' },
+            { value: 'combined', label: 'One combined 25-minute course covering both' },
+          ]}
+          error={errors.program_format?.message}
+          registration={register('program_format')}
+        />
+      )}
 
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '32px' }}>
         <SubmitButton type="submit">Next</SubmitButton>

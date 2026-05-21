@@ -4,6 +4,8 @@ const FormContext = createContext();
 
 const defaultFormData = {
   campus_info: {
+    program_interest: '',
+    program_format: '',
     university_name: '',
     allowed_email_domains: '',
     contact_name: '',
